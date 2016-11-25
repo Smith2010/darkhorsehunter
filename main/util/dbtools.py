@@ -34,9 +34,7 @@ def get_pressure_stock_list(conn):
     try:
         codes = []
         cur = conn.cursor()
-        query_sql = "select distinct(code) from pressure_monitor " \
-                    "where create_datetime>=date(now()) " \
-                    "and create_datetime<DATE_ADD(date(now()),INTERVAL 1 DAY)"
+        query_sql = "select distinct(code) from pressure_monitor where create_datetime>=date(now()) and create_datetime<DATE_ADD(date(now()),INTERVAL 1 DAY)"
         dfs = cur.execute(query_sql)
         results = cur.fetchmany(dfs)
         for item in results:
@@ -49,11 +47,7 @@ def get_pressure_stock_list(conn):
 
 def get_analysis_pressure(conn, code):
     try:
-        query_sql = "select * from pressure_monitor " \
-                    "where code='" + code + "' " \
-                    "and create_datetime>=date(now()) " \
-                    "and create_datetime<DATE_ADD(date(now()),INTERVAL 1 DAY) " \
-                    "order by create_datetime"
+        query_sql = "select * from pressure_monitor where code='" + code + "' and create_datetime>=date(now()) and create_datetime<DATE_ADD(date(now()),INTERVAL 1 DAY) order by create_datetime"
         return pd.read_sql(query_sql, conn)
     except IOError:
         return None
