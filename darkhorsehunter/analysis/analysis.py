@@ -7,8 +7,8 @@ Created on Wed Nov 16 16:11:15 2016
 
 import MySQLdb
 
-from main.data.config import *
-from main.util.dbtools import *
+from darkhorsehunter.data.config import *
+from darkhorsehunter.util.dbtools import *
 from sqlalchemy import create_engine
 
 

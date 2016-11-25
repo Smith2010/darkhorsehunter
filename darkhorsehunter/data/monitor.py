@@ -8,9 +8,9 @@ Created on Sun Nov 13 21:49:18 2016
 import tushare as ts
 import MySQLdb
 
-from main.data.config import *
-from main.util.common import *
-from main.util.dbtools import *
+from darkhorsehunter.data.config import *
+from darkhorsehunter.util.common import *
+from darkhorsehunter.util.dbtools import *
 
 
 def monitor(connection, data_frame, total_num):

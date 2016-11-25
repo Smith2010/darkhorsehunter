@@ -9,7 +9,7 @@ import pandas as pd
 import tushare as ts
 import datetime as dt
 
-from main.data.config import *
+from darkhorsehunter.data.config import *
 from io import StringIO
 from sqlalchemy import create_engine
 
