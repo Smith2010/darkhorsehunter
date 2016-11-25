@@ -6,9 +6,9 @@ Created on Wed Nov 16 16:11:15 2016
 """
 
 import MySQLdb
-import pandas as pd
-import main.data.config as cfg
-import main.util.dbtools as db
+
+from main.data.config import *
+from main.util.dbtools import *
 from sqlalchemy import create_engine
 
 
@@ -64,14 +64,14 @@ def get_pressure_value(pressure_detail):
                          "total_amounts": [float(pressure_amount) * float(pressure_price)]})
 
 
-conn = MySQLdb.connect(host=cfg.host, user=cfg.user, passwd=cfg.passwd, db=cfg.db, charset="utf8")
-engine = create_engine('mysql://' + cfg.user + ':' + cfg.passwd + '@' + cfg.host + '/' + cfg.db + '?charset=utf8')
+conn = MySQLdb.connect(host=host, user=user, passwd=passwd, db=db, charset="utf8")
+engine = create_engine('mysql://' + user + ':' + passwd + '@' + host + '/' + db + '?charset=utf8')
 
-stockCodeList = db.get_pressure_stock_list(conn)
+stockCodeList = get_pressure_stock_list(conn)
 
 
 for code in stockCodeList:
-    pressureDetailList = db.get_analysis_pressure(conn, code)
+    pressureDetailList = get_analysis_pressure(conn, code)
     df = check_pressure_deal(pressureDetailList)
     df.to_sql('analysis_results', engine, index=False, if_exists='append')
     print df

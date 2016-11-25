@@ -8,8 +8,8 @@ Created on Mon Nov 14 12:23:26 2016
 import pandas as pd
 import tushare as ts
 import datetime as dt
-import main.data.config as cfg
 
+from main.data.config import *
 from io import StringIO
 from sqlalchemy import create_engine
 
@@ -98,7 +98,7 @@ print 'Init stock pool start: ', dt.datetime.now()
 
 df = get_available_stock()
 
-engine = create_engine('mysql://' + cfg.user + ':' + cfg.passwd + '@' + cfg.host + '/' + cfg.db + '?charset=utf8')
+engine = create_engine('mysql://' + user + ':' + passwd + '@' + host + '/' + db + '?charset=utf8')
 df.to_sql('stock_pool', engine, index=False, if_exists='append')
 engine.connect().close()
 
