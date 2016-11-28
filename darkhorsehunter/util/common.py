@@ -15,7 +15,7 @@ def get_value(number):
     """
     try:
         return float(number)
-    except ValueError:
+    except ValueError as e:
         return 0
 
 

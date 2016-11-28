@@ -21,6 +21,8 @@ def monitor(connection, data_frame, total_num):
 
         try:
             real_data = ts.get_realtime_quotes(stock_code)  # Single stock symbol
+        except Exception as e:
+            print(e)
         except:
             print("Error: ", stock_code)
             continue
@@ -42,7 +44,10 @@ def monitor(connection, data_frame, total_num):
                 try:
                     save_pressure_data(connection, real_data)
                     print 'sell pressure deal: ', stock_code
+                except Exception as e:
+                    print(e)
                 except:
+                    print("Error: ", stock_code)
                     continue
                 break
 
@@ -59,11 +64,7 @@ def save_pressure_data(connection, real_data):
 conn = MySQLdb.connect(host=host, user=user, passwd=passwd, db=db, charset='utf8')
 df = get_db_value(conn, 'select * from stock_pool')
 
-while (1):
-    print 'Scan big deal start: ', dt.datetime.now()
+print 'Scan big deal start: ', dt.datetime.now()
+monitor(conn, df, MAX_MONITOR_STOCK_NUM)
+print 'Scan big deal end: ', dt.datetime.now()
 
-    monitor(conn, df, MAX_MONITOR_STOCK_NUM)
-
-    print 'Scan big deal end: ', dt.datetime.now()
-
-    time.sleep(60)
