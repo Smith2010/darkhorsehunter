@@ -21,10 +21,10 @@ def check_pressure_deal(pressure_detail_list):
     for i in pressure_detail_list.index:
         detail = get_pressure_value(pressure_detail_list.ix[i])
 
-        if (pressure_price != float(detail['pressure_price'].values[0])):
-            tmp_pressure_times = tmp_pressure_times + 1
+        if pressure_price != float(detail['pressure_price'].values[0]):
+            tmp_pressure_times += 1
 
-            if (tmp_pressure_amount < float(detail['total_amounts'].values[0])):
+            if tmp_pressure_amount < float(detail['total_amounts'].values[0]):
                 tmp_pressure_amount = float(detail['total_amounts'].values[0])
                 pressure_price = float(detail['pressure_price'].values[0])
 
