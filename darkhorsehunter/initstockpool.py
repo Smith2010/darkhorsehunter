@@ -8,10 +8,8 @@ Created on Mon Nov 14 12:23:26 2016
 import pandas as pd
 import tushare as ts
 import datetime as dt
-
-from darkhorsehunter.data.config import *
-from io import StringIO
-from sqlalchemy import create_engine
+import sqlalchemy
+import util.env as env
 
 TOTAL_ASSERT_LIMIT = 500000
 X_DAYS_AGO = 30
@@ -28,17 +26,6 @@ outstandMarketValue = []
 realMarketValue = []
 
 AgostrDate = (dt.datetime.now() - dt.timedelta(days=X_DAYS_AGO)).strftime("%Y%m%d")
-
-
-def get_stock_basics():
-    text = open('../../data/all.csv', 'r').read()
-    text = text.decode('GBK')
-    text = text.replace('--', '')
-    df1 = pd.read_csv(StringIO(text), dtype={'code': 'object'})
-    df1 = df1.set_index('code')
-    return df1
-
-
 infoList = ts.get_stock_basics()
 
 
@@ -98,7 +85,7 @@ print 'Init stock pool start: ', dt.datetime.now()
 
 df = get_available_stock()
 
-engine = create_engine('mysql://' + user + ':' + passwd + '@' + host + '/' + db + '?charset=utf8')
+engine = sqlalchemy.create_engine('mysql://' + env.user + ':' + env.passwd + '@' + env.host + '/' + env.db + '?charset=utf8')
 df.to_sql('stock_pool', engine, index=False, if_exists='append')
 engine.connect().close()
 

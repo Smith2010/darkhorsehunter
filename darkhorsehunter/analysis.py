@@ -5,11 +5,8 @@ Created on Wed Nov 16 16:11:15 2016
 @author: claude
 """
 
-import MySQLdb
-
-from darkhorsehunter.data.config import *
-from darkhorsehunter.util.dbtools import *
-from sqlalchemy import create_engine
+import pandas as pd
+import util.dbtools as db
 
 
 def check_pressure_deal(pressure_detail_list):
@@ -64,20 +61,11 @@ def get_pressure_value(pressure_detail):
                          "total_amounts": [float(pressure_amount) * float(pressure_price)]})
 
 
-conn = MySQLdb.connect(host=host, user=user, passwd=passwd, db=db, charset="utf8")
-engine = create_engine('mysql://' + user + ':' + passwd + '@' + host + '/' + db + '?charset=utf8')
+def analysis(conn, engine):
+    stock_code_list = db.get_pressure_stock_list(conn)
 
-stockCodeList = get_pressure_stock_list(conn)
-
-
-for code in stockCodeList:
-    pressureDetailList = get_analysis_pressure(conn, code)
-    df = check_pressure_deal(pressureDetailList)
-    df.to_sql('analysis_results', engine, index=False, if_exists='append')
-    print df
-
-conn.close()
-engine.connect().close()
-
-
-
+    for code in stock_code_list:
+        pressure_detail_list = db.get_analysis_pressure(conn, code)
+        df = check_pressure_deal(pressure_detail_list)
+        df.to_sql('analysis_results', engine, index=False, if_exists='append')
+        print df
