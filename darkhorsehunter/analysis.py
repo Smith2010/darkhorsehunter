@@ -29,7 +29,7 @@ def check_pressure_deal(pressure_detail_list):
                 pressure_price = float(detail['pressure_price'].values[0])
 
     return pd.DataFrame({"code": [detail_code], "name": [detail_name], "times": [tmp_pressure_times],
-                         "datetime": [detail_datetime], "amount": tmp_pressure_amount})
+                         "datetime": [detail_datetime], "amount": tmp_pressure_amount/100})
 
 
 def get_pressure_value(pressure_detail):
