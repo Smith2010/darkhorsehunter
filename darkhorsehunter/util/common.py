@@ -6,17 +6,21 @@ Created on Sat Nov 19 14:19:27 2016
 """
 
 import datetime as dt
-import time
 
 
-def get_value(number):
+def get_float_value(number):
     """
     string to float
     """
+    return float(number) if is_float(number) else 0
+
+
+def is_float(number):
     try:
-        return float(number)
-    except ValueError as e:
-        return 0
+        float(number)
+        return True
+    except ValueError:
+        return False
 
 
 def get_format_current_time():
@@ -26,15 +30,3 @@ def get_format_current_time():
 def get_format_datetime(date_value, time_value):
     return date_value[0:4] + date_value[5:7] + date_value[8:10] + time_value[0:2] + time_value[3:5] + time_value[6:8]
 
-
-def deco(func):
-    def _deco(*args, **kwargs):
-
-        print "Begin ", dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        res = func(*args, **kwargs)
-        time.sleep(5)
-
-        return res
-
-    return _deco

@@ -9,7 +9,7 @@ import pandas as pd
 import tushare as ts
 import datetime as dt
 import sqlalchemy
-import util.env as env
+import os
 
 TOTAL_ASSERT_LIMIT = 500000
 X_DAYS_AGO = 30
@@ -25,8 +25,13 @@ totalMarketValue = []
 outstandMarketValue = []
 realMarketValue = []
 
-AgostrDate = (dt.datetime.now() - dt.timedelta(days=X_DAYS_AGO)).strftime("%Y%m%d")
+agostrDate = (dt.datetime.now() - dt.timedelta(days=X_DAYS_AGO)).strftime("%Y%m%d")
 infoList = ts.get_stock_basics()
+
+host = os.getenv('DARKHORSE_HOST')
+user = os.getenv('DARKHORSE_USER')
+passwd = os.getenv('DARKHORSE_PASSWD')
+db = os.getenv('DARKHORSE_DB')
 
 
 def get_available_stock():
@@ -34,10 +39,10 @@ def get_available_stock():
         for stockCode in infoList.index:
             stock = infoList.ix[stockCode]
 
-            if (stock['outstanding'] == 0):
+            if stock['outstanding'] == 0:
                 continue
 
-            if (int(stock['timeToMarket']) > int(AgostrDate)):
+            if int(stock['timeToMarket']) > int(agostrDate):
                 continue
 
             try:
@@ -46,7 +51,7 @@ def get_available_stock():
                 print("Error: ", stockCode)
                 continue
 
-            if (real_data is None):
+            if real_data is None:
                 continue
 
             outstand_market_value = stock['outstanding'] * float(real_data['price'].values[0]) * 10000
@@ -85,7 +90,7 @@ print 'Init stock pool start: ', dt.datetime.now()
 
 df = get_available_stock()
 
-engine = sqlalchemy.create_engine('mysql://' + env.user + ':' + env.passwd + '@' + env.host + '/' + env.db + '?charset=utf8')
+engine = sqlalchemy.create_engine('mysql://' + user + ':' + passwd + '@' + host + '/' + db + '?charset=utf8')
 df.to_sql('stock_pool', engine, index=False, if_exists='append')
 engine.connect().close()
 

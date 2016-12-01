@@ -31,7 +31,8 @@ def monitor(connection):
             real_data = ts.get_realtime_quotes(stock_code.tolist())  # 30 stocks symbol
             for j in range(0, len(real_data.index)):
                 # for i in range(0, 5):  # buy
-                #     amount = common.get_value(real_data[REALTIME_BID_BUY_LIST[2 * i]][0]) * common.get_value(
+                #     amount = common.get_float_value(
+                #         real_data[REALTIME_BID_BUY_LIST[2 * i]][0]) * common.get_float_value(
                 #         real_data[REALTIME_BID_BUY_LIST[2 * i + 1]][0])
                 #     if amount * 100 >= MONITOR_THRESHOLD_AMOUNT:
                 #         real_pressure_data = real_data[j:j + 1]
@@ -40,7 +41,8 @@ def monitor(connection):
                 #         break
 
                 for i in range(0, 5):  # sell
-                    amount = common.get_value(real_data[REALTIME_BID_SELL_LIST[2 * i]][j]) * common.get_value(
+                    amount = common.get_float_value(
+                        real_data[REALTIME_BID_SELL_LIST[2 * i]][j]) * common.get_float_value(
                         real_data[REALTIME_BID_SELL_LIST[2 * i + 1]][j])
                     if amount * 100 >= MONITOR_THRESHOLD_AMOUNT:
                         real_pressure_data = real_data[j:j + 1]
