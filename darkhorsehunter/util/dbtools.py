@@ -23,11 +23,11 @@ def add_pressure_monitor_data(connection, values):
     try:
         cur = connection.cursor()
         insert_sql = "insert into pressure_monitor (code, name, open, pre_close, price, high, low, " \
-                     " sell_price1, sell_amount1, sell_price2, sell_amount2, sell_price3, sell_amount3, " \
-                     " sell_price4, sell_amount4, sell_price5, sell_amount5," \
-                     " buy_price1, buy_amount1, buy_price2, buy_amount2, buy_price3, buy_amount3," \
-                     " buy_price4, buy_amount4, buy_price5, buy_amount5, datetime) " \
-                     " values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                     " sell_price1, sell_volume1, sell_price2, sell_volume2, sell_price3, sell_volume3, " \
+                     " sell_price4, sell_volume4, sell_price5, sell_volume5," \
+                     " buy_price1, buy_volume1, buy_price2, buy_volume2, buy_price3, buy_volume3," \
+                     " buy_price4, buy_volume4, buy_price5, buy_volume5, pressure_date, pressure_time) " \
+                     " values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
         cur.execute(insert_sql, values)
         cur.close()
         connection.commit()
@@ -59,7 +59,7 @@ def get_stock_outstanding_market_value(conn, code):
     value = 0
     try:
         cur = conn.cursor()
-        query_sql = "select outstandMarketValue from stock_pool where code='" + code + "'"
+        query_sql = "select outstandMarketValue from stock_pool where code=%s" % code
         dfs = cur.execute(query_sql)
         results = cur.fetchmany(dfs)
         for item in results:
@@ -72,8 +72,8 @@ def get_stock_outstanding_market_value(conn, code):
 
 
 def get_today_pressure_data(conn, code):
-    query_sql = "select * from pressure_monitor where code='" + code + "' and create_datetime>=date(now()) " \
-                "and create_datetime<DATE_ADD(date(now()),INTERVAL 1 DAY) order by create_datetime desc"
+    query_sql = "select * from pressure_monitor where code=%s and create_datetime>=date(now()) " \
+                "and create_datetime<DATE_ADD(date(now()),INTERVAL 1 DAY) order by create_datetime desc" % code
     return get_db_value(conn, query_sql)
 
 
@@ -81,13 +81,13 @@ def add_analysis_results_data(connection, values):
     try:
         cur = connection.cursor()
         insert_sql = "insert into analysis_results (id, code, name, change_rate, price, amount, outstandMarketValue, " \
-                     " today_times, days, datetime) values(%s, %s,%s,%s,%s,%s,%s,%s,%s,%s) " \
+                     " today_times, days, pressure_date, pressure_time) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) " \
                      " on duplicate key update " \
                      " change_rate=VALUES(change_rate), " \
                      " price=VALUES(price), " \
                      " amount=VALUES(amount), " \
                      " today_times=VALUES(today_times), " \
-                     " datetime=VALUES(datetime)"
+                     " pressure_time=VALUES(pressure_time)"
         cur.execute(insert_sql, values)
         cur.close()
         connection.commit()
