@@ -67,5 +67,4 @@ def save_pressure_data(connection, real_pressure_data):
         if data_list[idx] == '':
             data_list[idx] = 0
 
-    data_list[-2] = common.get_format_date(data_list[-2])
     db.add_pressure_monitor_data(connection, data_list)

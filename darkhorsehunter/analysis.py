@@ -18,7 +18,7 @@ def check_pressure_deal(pressure_detail_list, outstanding_market_value, pressure
     detail_name = pressure_detail_list.ix[0]['name']
     detail_pre_close = pressure_detail_list.ix[0]['pre_close']
     pressure_date = pressure_detail_list.ix[0]['pressure_date']
-    result_id = common.get_int_value(pressure_date + detail_code)
+    result_id = common.get_int_value(common.get_format_date(pressure_date) + detail_code)
 
     today_times = 0
     pressure_price = 0
