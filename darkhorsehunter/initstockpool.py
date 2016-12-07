@@ -57,7 +57,7 @@ def get_available_stock():
             outstand_market_value = stock['outstanding'] * float(real_data['price'].values[0]) * 10000
             total_market_value = stock['totals'] * float(real_data['price'].values[0]) * 10000
             real_market_value = outstand_market_value
-            if (real_market_value > 0 and real_market_value < TOTAL_ASSERT_LIMIT):
+            if real_market_value > 0 and real_market_value < TOTAL_ASSERT_LIMIT:
                 print stockCode
                 code.append(stockCode)
                 name.append(stock['name'])

@@ -8,11 +8,26 @@ Created on Sat Nov 19 14:19:27 2016
 import datetime as dt
 
 
+def get_int_value(number):
+    """
+    string to int
+    """
+    return int(number) if is_int(number) else 0
+
+
 def get_float_value(number):
     """
     string to float
     """
     return float(number) if is_float(number) else 0
+
+
+def is_int(number):
+    try:
+        int(number)
+        return True
+    except ValueError:
+        return False
 
 
 def is_float(number):
