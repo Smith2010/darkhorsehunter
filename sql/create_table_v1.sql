@@ -9,7 +9,8 @@ CREATE TABLE stock_pool (
   totalMarketValue DECIMAL(12,2) NULL COMMENT '总市值',
   outstandMarketValue DECIMAL(12,2) NULL COMMENT '流通市值',
   realMarketValue DECIMAL(12,2) NULL COMMENT '真实流通市值',
-  PRIMARY KEY (code));
+  PRIMARY KEY (code)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE pressure_monitor (
   id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'PK',
@@ -44,7 +45,11 @@ CREATE TABLE pressure_monitor (
   pressure_time VARCHAR(20) NULL,
   create_datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id));
+  PRIMARY KEY (id),
+  KEY pressure_monitor_idx01(code),
+  KEY pressure_monitor_idx02(pressure_date),
+  KEY pressure_monitor_idx03(create_datetime)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE analysis_results (
   id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'PK',
@@ -60,4 +65,8 @@ CREATE TABLE analysis_results (
   pressure_time VARCHAR(20) NULL,
   create_datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id));
+  PRIMARY KEY (id),
+  KEY analysis_results_idx01(code),
+  KEY analysis_results_idx02(pressure_date),
+  KEY analysis_results_idx03(modified_datetime)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
